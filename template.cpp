@@ -3,26 +3,36 @@
 #include <math.h>
 #include <iomanip>
 
+//class EClassException
+//{
+//protected:
+//    char _err[256];
+//public:
+//    EClassException(const char* err);
+//    void Print();
+//    ~EClassException();
+//};
+//
+//EClassException::EClassException(const char* err)
+//{
+//    strncpy_s(_err, err, 255);
+//    _err[255] = 0;
+//}
+//void EClassException::Print()
+//{
+//    std::cout << _err << std::endl;
+//}
+//EClassException::~EClassException() {}
+
 class EClassException
 {
 protected:
     char _err[256];
 public:
     EClassException(const char* err);
-    void Print();
-    ~EClassException();
+    virtual void Print();
+    virtual ~EClassException();
 };
-
-EClassException::EClassException(const char* err)
-{
-    strncpy_s(_err, err, 255);
-    _err[255] = 0;
-}
-void EClassException::Print()
-{
-    std::cout << _err << std::endl;
-}
-EClassException::~EClassException() {}
 
 template <typename T>
 class BinaryImg
