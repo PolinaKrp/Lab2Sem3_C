@@ -241,7 +241,7 @@ public:
         return *this;
     }
 
-    double Coeff() const
+    double FillFactor() const
     {
         int k = 0;
         for (int i = 0; i < row; i++)
@@ -487,7 +487,7 @@ public:
         }
         return *this;
     }
-    double Coeff() const
+    double FillFactor() const
     {
         int k = 0;
         for (int i = 0; i < row; i++)
