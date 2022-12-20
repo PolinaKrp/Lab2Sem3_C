@@ -1,13 +1,12 @@
 #include "template.h"
 
 
-
 template <typename T>
-void Make_Line(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
+void DrawLine(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
 {
-    if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("Error. Working with numbers greater than zero"); }
+    if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("working with numbers greater than zero"); }
     if (x1 >= src.GetRow() || x2 >= src.GetRow() || y1 >= src.GetCol() || y2 >= src.GetCol()) {
-        throw EClassException("Error. Coordinates out of range");
+        throw EClassException("Coordinates out of range");
     }
     int dx = abs(x2 - x1);
     int sx = x1 < x2 ? 1 : -1;
@@ -35,12 +34,13 @@ void Make_Line(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
     }
 }
 
+
 template <>
-void Make_Line(int x1, int y1, int x2, int y2, BinaryImg<bool>& src)
+void DrawLine(int x1, int y1, int x2, int y2, BinaryImg<char>& src)
 {
-    if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("Error. Working with numbers greater than zero"); }
+    if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("working with numbers greater than zero"); }
     if (x1 >= src.GetRow() || x2 >= src.GetRow() || y1 >= src.GetCol() || y2 >= src.GetCol()) {
-        throw EClassException("Error. Coordinates out of range");
+        throw EClassException("Coordinates out of range");
     }
     int dx = abs(x2 - x1);
     int sx = x1 < x2 ? 1 : -1;
@@ -66,52 +66,6 @@ void Make_Line(int x1, int y1, int x2, int y2, BinaryImg<bool>& src)
             y1 = y1 + sy;
         }
     }
-}
-
-
-template <>
-void Make_Line(int x1, int y1, int x2, int y2, BinaryImg<char>& src)
-{
-    if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("Error. Working with numbers greater than zero"); }
-    if (x1 >= src.GetRow() || x2 >= src.GetRow() || y1 >= src.GetCol() || y2 >= src.GetCol()) {
-        throw EClassException("Error. Coordinates out of range");
-    }
-    int dx = abs(x2 - x1);
-    int sx = x1 < x2 ? 1 : -1;
-    int dy = -abs(y2 - y1);
-    int sy = y1 < y2 ? 1 : -1;
-    int error = dx + dy;
-
-    while (true)
-    {
-        src(x1, y1) = std::numeric_limits<char>::max();
-        if (x1 == x2 && y1 == y2) break;
-        int e2 = 2 * error;
-        if (e2 >= dy)
-        {
-            if (x1 == x2) break;
-            error = error + dy;
-            x1 = x1 + sx;
-        }
-        if (e2 <= dx)
-        {
-            if (y1 == y2) break;
-            error = error + dx;
-            y1 = y1 + sy;
-        }
-    }
-}
-
-template <typename T>
-std::ostream& operator<<(std::ostream& os, BinaryImg<T>& obj)
-{
-    for (auto i : obj) {
-        for (auto j : i) {
-            std::cout << j << std::setw(7);
-        }
-        std::cout << "\n";
-    }
-    return os;
 }
 
 
@@ -181,7 +135,7 @@ int main()
                             std::cin >> y;
                             std::cout << "Enter value: ";
                             std::cin >> temp;
-                            image(x, y, temp);
+                            image(x, y) = temp;
                             std::cout << image;
                             system("pause");
                         }
@@ -241,7 +195,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<bool>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<bool>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<bool> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -287,7 +241,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<bool>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<bool>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<bool> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -319,7 +273,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.koeff();
+                        res = image.FillFactor();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -428,7 +382,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<char>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<char>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<char> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -474,7 +428,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<char>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<char>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<char> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -506,7 +460,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.koeff();
+                        res = image.FillFactor();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -614,7 +568,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<short>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<short>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<short> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -660,7 +614,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<short>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<short>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<short> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -692,7 +646,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.koeff();
+                        res = image.FillFactor();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -800,7 +754,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<float>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<float>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<float> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -846,7 +800,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            Make_Line<float>(sx1, sy1, sx2, sy2, b);
+                            DrawLine<float>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<float> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -878,7 +832,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.koeff();
+                        res = image.FillFactor();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
