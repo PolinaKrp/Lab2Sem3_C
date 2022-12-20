@@ -34,6 +34,17 @@ public:
     virtual ~EClassException();
 };
 
+//EClassException::EClassException(const char* err)
+//{
+//    strncpy_s(_err, err, 255);
+//    _err[255] = 0;
+//}
+void EClassException::Print()
+{
+    std::cout << _err << std::endl;
+}
+EClassException::~EClassException() {}
+
 template <typename T>
 class BinaryImg
 {
