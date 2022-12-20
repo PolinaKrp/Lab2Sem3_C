@@ -2,7 +2,7 @@
 
 
 template <typename T>
-void DrawLine(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
+void Make_line(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
 {
     if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("working with numbers greater than zero"); }
     if (x1 >= src.GetRow() || x2 >= src.GetRow() || y1 >= src.GetCol() || y2 >= src.GetCol()) {
@@ -36,7 +36,7 @@ void DrawLine(int x1, int y1, int x2, int y2, BinaryImg<T>& src)
 
 
 template <>
-void DrawLine(int x1, int y1, int x2, int y2, BinaryImg<char>& src)
+void Make_line(int x1, int y1, int x2, int y2, BinaryImg<char>& src)
 {
     if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0) { throw EClassException("working with numbers greater than zero"); }
     if (x1 >= src.GetRow() || x2 >= src.GetRow() || y1 >= src.GetCol() || y2 >= src.GetCol()) {
@@ -195,7 +195,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<bool>(sx1, sy1, sx2, sy2, b);
+                            Make_line<bool>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<bool> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -241,7 +241,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<bool>(sx1, sy1, sx2, sy2, b);
+                            Make_line<bool>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<bool> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -273,7 +273,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.FillFactor();
+                        res = image.Coeff();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -382,7 +382,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<char>(sx1, sy1, sx2, sy2, b);
+                            Make_line<char>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<char> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -428,7 +428,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<char>(sx1, sy1, sx2, sy2, b);
+                            Make_line<char>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<char> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -460,7 +460,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.FillFactor();
+                        res = image.Coeff();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -568,7 +568,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<short>(sx1, sy1, sx2, sy2, b);
+                            Make_line<short>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<short> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -614,7 +614,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<short>(sx1, sy1, sx2, sy2, b);
+                            Make_line<short>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<short> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -646,7 +646,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.FillFactor();
+                        res = image.Coeff();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
@@ -754,7 +754,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<float>(sx1, sy1, sx2, sy2, b);
+                            Make_line<float>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<float> res(sx, sy);
                             res = image * b;
                             image = res;
@@ -800,7 +800,7 @@ int main()
                             std::cin >> sx1 >> sy1;
                             std::cout << "enter x2 and y2: ";
                             std::cin >> sx2 >> sy2;
-                            DrawLine<float>(sx1, sy1, sx2, sy2, b);
+                            Make_line<float>(sx1, sy1, sx2, sy2, b);
                             BinaryImg<float> res(sx, sy);
                             res = image + b;
                             image = res;
@@ -832,7 +832,7 @@ int main()
                     }
                     else if (choice1 == 8) {
                         double res;
-                        res = image.FillFactor();
+                        res = image.Coeff();
                         std::cout.precision(2);
                         std::cout << res << std::endl;
                         system("pause");
