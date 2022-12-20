@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <math.h>
 #include <iomanip>
@@ -9,7 +10,7 @@ protected:
 public:
     EClassException(const char* err);
     void Print();
-    /*~EClassException();*/
+    ~EClassException();
 };
 
 EClassException::EClassException(const char* err)
@@ -21,13 +22,13 @@ void EClassException::Print()
 {
     std::cout << _err << std::endl;
 }
-//EClassException::~EClassException() {}
+EClassException::~EClassException() {}
 
 template <typename T>
 class BinaryImg
 {
 private:
-    T** matrix;
+    T** array;
     int row;
     int col;
     BinaryImg<T> And(T rhs) const
@@ -37,7 +38,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = matrix[i][j] * rhs;
+                result.array[i][j] = array[i][j] * rhs;
             }
         }
         return result;
@@ -49,7 +50,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = matrix[i][j] + rhs;
+                result.array[i][j] = array[i][j] + rhs;
             }
         }
         return result;
@@ -62,7 +63,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = matrix[i][j] * src.matrix[i][j];
+                result.array[i][j] = array[i][j] * src.array[i][j];
             }
         }
         return result;
@@ -75,7 +76,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = matrix[i][j] + src.matrix[i][j];
+                result.array[i][j] = array[i][j] + src.array[i][j];
             }
         }
         return result;
@@ -88,27 +89,27 @@ public:
         if (x <= 0 || y <= 0) { throw EClassException("invalid dimension"); }
         row = x;
         col = y;
-        matrix = new T * [row];
+        array = new T * [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new T[col]{};
+            array[i] = new T[col]{};
         }
     }
     BinaryImg(const BinaryImg<T>& src)
     {
         row = src.row;
         col = src.col;
-        matrix = new T * [row];
+        array = new T * [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new T[col];
+            array[i] = new T[col];
         }
 
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                matrix[i][j] = src.matrix[i][j];
+                array[i][j] = src.array[i][j];
             }
         }
     }
@@ -117,9 +118,9 @@ public:
     {
         for (int i = 0; i < row; i++)
         {
-            delete[]matrix[i];
+            delete[]array[i];
         }
-        delete[]matrix;
+        delete[]array;
     }
     int GetRow() const { return row; }
     int GetCol() const { return col; }
@@ -129,7 +130,7 @@ public:
         {
             for (int j = 0; j < obj.col; j++)
             {
-                std::cout << obj.matrix[i][j] << std::setw(2);
+                std::cout << obj.array[i][j] << std::setw(2);
             }
             std::cout << "\n";
         }
@@ -142,7 +143,7 @@ public:
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j] != src.matrix[i][j]) { return false; }
+                if (array[i][j] != src.array[i][j]) { return false; }
             }
         }
         return true;
@@ -157,7 +158,7 @@ public:
         {
             throw EClassException("invalid index");
         }
-        return matrix[x][y];
+        return array[x][y];
     }
     T operator()(int x, int y) const
     {
@@ -165,7 +166,7 @@ public:
         {
             throw EClassException("invalid index");
         }
-        return matrix[x][y];
+        return array[x][y];
     }
     BinaryImg<T> operator+(const BinaryImg<T>& src) const
     {
@@ -189,13 +190,13 @@ public:
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j] == 0)
+                if (array[i][j] == 0)
                 {
-                    matrix[i][j] = std::numeric_limits<T>::max();
+                    array[i][j] = std::numeric_limits<T>::max();
                 }
                 else
                 {
-                    matrix[i][j] = 0;
+                    array[i][j] = 0;
                 }
             }
         }
@@ -209,7 +210,7 @@ public:
             {
                 for (int j = 0; j < col; j++)
                 {
-                    matrix[i][j] = src.matrix[i][j];
+                    array[i][j] = src.array[i][j];
                 }
             }
             return *this;
@@ -217,37 +218,37 @@ public:
 
         for (int i = 0; i < row; i++)
         {
-            delete[]matrix[i];
+            delete[]array[i];
         }
-        delete[]matrix;
+        delete[]array;
 
         row = src.row;
         col = src.col;
 
-        matrix = new T * [row];
+        array = new T * [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new T[col];
+            array[i] = new T[col];
         }
 
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                matrix[i][j] = src.matrix[i][j];
+                array[i][j] = src.array[i][j];
             }
         }
         return *this;
     }
 
-    double koeff() const
+    double FillFactor() const
     {
         int k = 0;
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j]) { k++; }
+                if (array[i][j]) { k++; }
             }
         }
         double res = (double)k / (row * col);
@@ -268,7 +269,7 @@ template <>
 class BinaryImg<char>
 {
 private:
-    char** matrix;
+    char** array;
     int row;
     int col;
     BinaryImg<char> And(char rhs) const
@@ -278,7 +279,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = (int)matrix[i][j] * (int)rhs;
+                result.array[i][j] = (int)array[i][j] * (int)rhs;
             }
         }
         return result;
@@ -290,7 +291,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = (int)matrix[i][j] + (int)rhs;
+                result.array[i][j] = (int)array[i][j] + (int)rhs;
             }
         }
         return result;
@@ -303,7 +304,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = (int)matrix[i][j] * (int)src.matrix[i][j];
+                result.array[i][j] = (int)array[i][j] * (int)src.array[i][j];
             }
         }
         return result;
@@ -316,7 +317,7 @@ private:
         {
             for (int j = 0; j < col; j++)
             {
-                result.matrix[i][j] = (int)matrix[i][j] + (int)src.matrix[i][j];
+                result.array[i][j] = (int)array[i][j] + (int)src.array[i][j];
             }
         }
         return result;
@@ -328,16 +329,16 @@ public:
         if (x <= 0 || y <= 0) { throw EClassException("invalid dimension"); }
         row = x;
         col = y;
-        matrix = new char* [row];
+        array = new char* [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new char[col];
+            array[i] = new char[col];
         }
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                matrix[i][j] = '0';
+                array[i][j] = '0';
             }
         }
     }
@@ -345,17 +346,17 @@ public:
     {
         row = src.row;
         col = src.col;
-        matrix = new char* [row];
+        array = new char* [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new char[col];
+            array[i] = new char[col];
         }
 
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                matrix[i][j] = src.matrix[i][j];
+                array[i][j] = src.array[i][j];
             }
         }
     }
@@ -363,9 +364,9 @@ public:
     {
         for (int i = 0; i < row; i++)
         {
-            delete[]matrix[i];
+            delete[]array[i];
         }
-        delete[]matrix;
+        delete[]array;
     }
     int GetRow() const { return row; }
     int GetCol() const { return col; }
@@ -375,7 +376,7 @@ public:
         {
             for (int j = 0; j < obj.col; j++)
             {
-                std::cout << obj.matrix[i][j] << std::setw(2);
+                std::cout << obj.array[i][j] << std::setw(2);
             }
             std::cout << "\n";
         }
@@ -388,7 +389,7 @@ public:
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j] != src.matrix[i][j]) { return false; }
+                if (array[i][j] != src.array[i][j]) { return false; }
             }
         }
         return true;
@@ -403,7 +404,7 @@ public:
         {
             throw EClassException("invalid index");
         }
-        return matrix[x][y];
+        return array[x][y];
     }
     char operator()(int x, int y) const
     {
@@ -411,7 +412,7 @@ public:
         {
             throw EClassException("invalid index");
         }
-        return matrix[x][y];
+        return array[x][y];
     }
     BinaryImg<char> operator+(const BinaryImg<char>& src) const
     {
@@ -435,13 +436,13 @@ public:
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j] == '0')
+                if (array[i][j] == '0')
                 {
-                    matrix[i][j] = std::numeric_limits<char>::max();
+                    array[i][j] = std::numeric_limits<char>::max();
                 }
                 else
                 {
-                    matrix[i][j] = '0';
+                    array[i][j] = '0';
                 }
             }
         }
@@ -456,7 +457,7 @@ public:
             {
                 for (int j = 0; j < col; j++)
                 {
-                    matrix[i][j] = src.matrix[i][j];
+                    array[i][j] = src.array[i][j];
                 }
             }
             return *this;
@@ -464,36 +465,36 @@ public:
 
         for (int i = 0; i < row; i++)
         {
-            delete[]matrix[i];
+            delete[]array[i];
         }
-        delete[]matrix;
+        delete[]array;
 
         row = src.row;
         col = src.col;
 
-        matrix = new char* [row];
+        array = new char* [row];
         for (int i = 0; i < row; i++)
         {
-            matrix[i] = new char[col];
+            array[i] = new char[col];
         }
 
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                matrix[i][j] = src.matrix[i][j];
+                array[i][j] = src.array[i][j];
             }
         }
         return *this;
     }
-    double koeff() const
+    double FillFactor() const
     {
         int k = 0;
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
-                if (matrix[i][j] != '0') { k++; }
+                if (array[i][j] != '0') { k++; }
             }
         }
         double res = (double)k / (row * col);
